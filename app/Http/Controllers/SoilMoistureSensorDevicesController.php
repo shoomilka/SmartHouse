@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Validator;
+use App\Models\UserSoilMoistureSensorDevice;
 
-class DashboardController extends Controller
+class SoilMoistureSensorDevicesController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +24,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $devices = UserSoilMoistureSensorDevice::orderBy('serial_number', 'desc')->paginate(20);
+
+        return view('soil_moisture_sensor_devices', ['devices' => $devices]);
     }
 
     /**
@@ -34,7 +36,7 @@ class DashboardController extends Controller
      */
     public function create()
     {
-        return view('dashboard_create');
+        //
     }
 
     /**
@@ -45,13 +47,7 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        $r = $request->all();
-        $validator = Validator::make($r, [
-            'name'         => 'required|min:1',
-        ]);
-        if ($validator->fails()) {
-            return abort(404);
-        }
+        //
     }
 
     /**
