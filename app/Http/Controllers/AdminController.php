@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Auth;
 
 class AdminController extends Controller
 {
@@ -23,7 +25,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::paginate(10);
+        return view('admin', ['users' => $users]);
     }
 
     /**
@@ -55,7 +58,8 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin_show', ['user' => $user]);
     }
 
     /**
@@ -78,7 +82,13 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (Auth::id() == $id) {
+            return back();
+        }
+        $user = User::findOrFail($id);
+        $user->is_admin = !$user->is_admin;
+        $user->save();
+        return redirect('/admin');
     }
 
     /**

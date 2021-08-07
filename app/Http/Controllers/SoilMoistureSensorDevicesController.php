@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SoilMoistureSensorDevice;
 use Illuminate\Http\Request;
 use App\Models\UserSoilMoistureSensorDevice;
+use Auth;
 
 class SoilMoistureSensorDevicesController extends Controller
 {
@@ -25,7 +26,7 @@ class SoilMoistureSensorDevicesController extends Controller
      */
     public function index()
     {
-        $devices = UserSoilMoistureSensorDevice::orderBy('serial_number', 'desc')->paginate(20);
+        $devices = UserSoilMoistureSensorDevice::where('user_id', Auth::user()->id)->orderBy('serial_number', 'desc')->paginate(20);
 
         return view('soil_moisture_sensor_devices', ['devices' => $devices]);
     }
