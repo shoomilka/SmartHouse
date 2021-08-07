@@ -25,6 +25,7 @@ Route::resource('/dashboard', 'App\Http\Controllers\DashboardController')->names
     'index'     => 'dashboard.index',
     'create'    => 'dashboard.create',
     'store'     => 'dashboard.store',
+    'update'    => 'dashboard.update',
 ]);
 
 Route::resource('/soil_moisture_sensor_devices', 'App\Http\Controllers\SoilMoistureSensorDevicesController')->names([

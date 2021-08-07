@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SoilMoistureSensorValue;
+use App\Models\SoilMoistureSensorDevice;
 
 class SaveSoilMoistureValueController extends Controller
 {
@@ -18,6 +19,9 @@ class SaveSoilMoistureValueController extends Controller
         $sensor->value = $request->input('value');
         $sensor->serial_number = $request->input('serial_number');
         $sensor->save();
+
+        $device = SoilMoistureSensorDevice::where('serial_number', $request->input('serial_number'))->firstOrFail();
+        return json_encode(["status" => "ok", "time_delay" => $device->time_delay]);
     }
 
     /**

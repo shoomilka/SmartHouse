@@ -14,15 +14,25 @@
                     </div>
                     @endif
 
+                    @if ($errors->any())
+                    <div class="error card-body alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <form method="POST" action="/dashboard">
                         @csrf
                         <div class="form-group">
                             <label for="name">Device's Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name">
                         </div>
                         <div class="form-group">
                             <label for="serial_number">Device's Serial Number</label>
-                            <input type="text" class="form-control" id="serial_number" placeholder="Enter Serial Number">
+                            <input type="text" class="form-control" name="serial_number" id="serial_number" placeholder="Enter Serial Number">
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SoilMoistureSensorDevice;
 use Illuminate\Http\Request;
 use App\Models\UserSoilMoistureSensorDevice;
 
@@ -47,7 +48,17 @@ class SoilMoistureSensorDevicesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $serial_number = $request->input('serial_number');
+        if (!in_array((int)$request->input('time_delay'), [3600000, 7200000, 10800000, 14400000, 18000000, 21600000, 25200000, 28800000])) {
+            return back()->withErrors('Incorrect Time Delay value!');
+        }
+        if (SoilMoistureSensorDevice::where('serial_number', $serial_number)->count() == 0) {
+            return back()->withErrors('Device does not exist!');
+        }
+        $device = SoilMoistureSensorDevice::where('serial_number', $serial_number)->first();
+        $device->time_delay = (int)$request->input('time_delay');
+        $device->save();
+        return redirect('soil_moisture_sensor_devices');
     }
 
     /**
