@@ -15,50 +15,51 @@
                     @endif
 
                     <div class="d-flex justify-content-center">{{ $devices->links() }}</div>
-
-                    <table class="table table-hover">
-                        <thead>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Name</th>
+                                    <th>Time Delay</th>
+                                    <th>Color</th>
+                                    <th>Value</th>
+                                    <th>Updated At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            @foreach($devices as $device)
                             <tr>
-                                <th>Serial Number</th>
-                                <th>Name</th>
-                                <th>Time Delay</th>
-                                <th>Color</th>
-                                <th>Value</th>
-                                <th>Updated At</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        @foreach($devices as $device)
-                        <tr>
-                            <td>{{ $device->serial_number }}</td>
-                            <td>{{ $device->name }}</td>
-                            <td>{{ $device->getTimeDelay() }}</td>
-                            <td>{{ $device->getColor() }}</td>
-                            <td>
-                                @if(!$device->lastValue())
-                                Device is not connected
-                                @else
+                                <td>{{ $device->serial_number }}</td>
+                                <td>{{ $device->name }}</td>
+                                <td>{{ $device->getTimeDelay() }}</td>
+                                <td>{{ $device->getColor() }}</td>
+                                <td>
+                                    @if(!$device->lastValue())
+                                    Device is not connected
+                                    @else
                                     @if($device->lastValue()->value)
                                     Зволожено
                                     @else
                                     Сухо
                                     @endif
-                                @endif
-                            </td>
-                            <td>
-                                @if(!$device->lastValue())
-                                Device is not connected
-                                @else
-                                {{ date('l jS F Y h:i:s A', strtotime($device->lastValue()->created_at)) }}
-                                @endif
-                            </td>
-                            <td>
-                                <button class="btn btn-primary rename" style="margin-bottom: 5px; width: 100%;" data-id="{{ $device->id }}">Rename</button>
-                                <button class="btn btn-secondary change_time_delay" style="width: 100%;" data-serial_number="{{ $device->serial_number }}">Change Time Delay</button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </table>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(!$device->lastValue())
+                                    Device is not connected
+                                    @else
+                                    {{ date('l jS F Y h:i:s A', strtotime($device->lastValue()->created_at)) }}
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary rename" style="margin-bottom: 5px; width: 100%;" data-id="{{ $device->id }}">Rename</button>
+                                    <button class="btn btn-secondary change_time_delay" style="width: 100%;" data-serial_number="{{ $device->serial_number }}">Change Time Delay</button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,7 +105,7 @@
             <form method="POST" action="/soil_moisture_sensor_devices">
                 <div class="modal-body">
                     @csrf
-                    <input type="hidden" name="serial_number" value=""/>
+                    <input type="hidden" name="serial_number" value="" />
                     <div class="form-group">
                         <label for="time_delay">New Device's Time Delay</label>
                         <select class="form-control" name="time_delay">
